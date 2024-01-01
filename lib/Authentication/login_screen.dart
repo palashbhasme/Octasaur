@@ -17,18 +17,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   final _signInFormKey = GlobalKey<FormState>();
+  //instantiate firebase auth class
   final FirebaseAuthService _auth = FirebaseAuthService();
+  //text field controllers
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  //isValidEmail to check if email entered is institute mail.
   final IsValidEmail _validEmail = IsValidEmail();
 
+  //sign in through email
   void signInUser() async {
     String email = _emailController.text;
     String password = _passwordController.text;
     User? user =
         await _auth.signInWithEmailAndPassword(context, email, password);
 
+    //is user is created successfully
     if (user != null) {
       Navigator.pushReplacement(
         context,
@@ -50,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  //Sign in with google
   void signInWithGoogle() async {
     User? user = await _auth.signInWithGoogle(context);
     if (user != null) {
@@ -114,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       _emailController.text)) {
                                     signInUser();
                                   } else {
+                                    //Error: if user does not use institute id
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: const Text(

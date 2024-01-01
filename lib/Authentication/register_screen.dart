@@ -19,8 +19,9 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _signUpFormKey = GlobalKey<FormState>();
-
+  // instantiate firebase auth class
   final FirebaseAuthService _auth = FirebaseAuthService();
+  //text field controllers
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _collageNameController = TextEditingController();
@@ -35,8 +36,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String instituteName = _collageNameController.text;
 
     User? user =
-        await _auth.signUpWithEmailAndPassword(context, email, password);
-
+    await _auth.signUpWithEmailAndPassword(context, email, password);
+    //if user is successfully created
     if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -47,7 +48,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         context,
         MaterialPageRoute(builder: (context) => HomeScreen(user: user)),
       );
-    } else {
+    } // if user registration fails
+    else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text("Registration failed"),
@@ -124,6 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               text: 'Register',
                               onTap: () {
                                 if (_signUpFormKey.currentState!.validate()) {
+                                  //validate if user is using institute mail using intitute specific regex
                                   if (_validEmail.isInstituteEmail(
                                       _emailController.text)) {
                                     signUpUser();
